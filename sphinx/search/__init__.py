@@ -447,7 +447,7 @@ class IndexBuilder(object):
     def context_for_searchtool(self):
         # type: () -> Dict[unicode, Any]
         return dict(
-            search_language_stemming_code = self.lang.js_stemmer_code,
+            search_language_stemming_code = self.get_js_stemmer_code(),
             search_language_stop_words = jsdump.dumps(sorted(self.lang.stopwords)),
             search_scorer_tool = self.js_scorer_code,
             search_word_splitter_code = self.js_splitter_code,
@@ -463,3 +463,25 @@ class IndexBuilder(object):
             )
         else:
             return None
+
+    def get_js_stemmer_code(self):
+        # type: () -> unicode
+        if self.lang.js_stemmer_rawcode:
+            base_js_filename = path.join(
+                sphinx.package_dir, 'search',
+                'minified-js',
+                'base-stemmer.js'
+            )
+            with open(base_js_filename) as base_js_file:
+                base_js = base_js_file.read()
+            language_js_filename = path.join(
+                sphinx.package_dir, 'search',
+                'minified-js',
+                self.lang.js_stemmer_rawcode
+            )
+            with open(language_js_filename) as language_js_file:
+                language_js = language_js_file.read()
+            return ("%s\n%s\nStemmer = %sStemmer;" %
+                    (base_js, language_js, self.lang.language_name))
+        else:
+            return self.lang.js_stemmer_code
