@@ -1,2518 +1,962 @@
-// generatedy by JSX compiler 0.9.89 (2014-05-20 06:01:03 +0900; 8e8c6105f36f3dfe440ea026a3c93a3444977102)
-var JSX = {};
-(function (JSX) {
-/**
- * extends the class
- */
-function $__jsx_extend(derivations, base) {
-	var ctor = function () {};
-	ctor.prototype = base.prototype;
-	var proto = new ctor();
-	for (var i in derivations) {
-		derivations[i].prototype = proto;
-	}
-}
-
-/**
- * copies the implementations from source interface to target
- */
-function $__jsx_merge_interface(target, source) {
-	for (var k in source.prototype)
-		if (source.prototype.hasOwnProperty(k))
-			target.prototype[k] = source.prototype[k];
-}
-
-/**
- * defers the initialization of the property
- */
-function $__jsx_lazy_init(obj, prop, func) {
-	function reset(obj, prop, value) {
-		delete obj[prop];
-		obj[prop] = value;
-		return value;
-	}
-
-	Object.defineProperty(obj, prop, {
-		get: function () {
-			return reset(obj, prop, func());
-		},
-		set: function (v) {
-			reset(obj, prop, v);
-		},
-		enumerable: true,
-		configurable: true
-	});
-}
-
-var $__jsx_imul = Math.imul;
-if (typeof $__jsx_imul === "undefined") {
-	$__jsx_imul = function (a, b) {
-		var ah  = (a >>> 16) & 0xffff;
-		var al = a & 0xffff;
-		var bh  = (b >>> 16) & 0xffff;
-		var bl = b & 0xffff;
-		return ((al * bl) + (((ah * bl + al * bh) << 16) >>> 0)|0);
-	};
-}
-
-/**
- * fused int-ops with side-effects
- */
-function $__jsx_ipadd(o, p, r) {
-	return o[p] = (o[p] + r) | 0;
-}
-function $__jsx_ipsub(o, p, r) {
-	return o[p] = (o[p] - r) | 0;
-}
-function $__jsx_ipmul(o, p, r) {
-	return o[p] = $__jsx_imul(o[p], r);
-}
-function $__jsx_ipdiv(o, p, r) {
-	return o[p] = (o[p] / r) | 0;
-}
-function $__jsx_ipmod(o, p, r) {
-	return o[p] = (o[p] % r) | 0;
-}
-function $__jsx_ippostinc(o, p) {
-	var v = o[p];
-	o[p] = (v + 1) | 0;
-	return v;
-}
-function $__jsx_ippostdec(o, p) {
-	var v = o[p];
-	o[p] = (v - 1) | 0;
-	return v;
-}
-
-/**
- * non-inlined version of Array#each
- */
-function $__jsx_forEach(o, f) {
-	var l = o.length;
-	for (var i = 0; i < l; ++i)
-		f(o[i]);
-}
-
-/*
- * global functions, renamed to avoid conflict with local variable names
- */
-var $__jsx_parseInt = parseInt;
-var $__jsx_parseFloat = parseFloat;
-function $__jsx_isNaN(n) { return n !== n; }
-var $__jsx_isFinite = isFinite;
-
-var $__jsx_encodeURIComponent = encodeURIComponent;
-var $__jsx_decodeURIComponent = decodeURIComponent;
-var $__jsx_encodeURI = encodeURI;
-var $__jsx_decodeURI = decodeURI;
-
-var $__jsx_ObjectToString = Object.prototype.toString;
-var $__jsx_ObjectHasOwnProperty = Object.prototype.hasOwnProperty;
-
-/*
- * profiler object, initialized afterwards
- */
-function $__jsx_profiler() {
-}
-
-/*
- * public interface to JSX code
- */
-JSX.require = function (path) {
-	var m = $__jsx_classMap[path];
-	return m !== undefined ? m : null;
-};
-
-JSX.profilerIsRunning = function () {
-	return $__jsx_profiler.getResults != null;
-};
-
-JSX.getProfileResults = function () {
-	return ($__jsx_profiler.getResults || function () { return {}; })();
-};
-
-JSX.postProfileResults = function (url, cb) {
-	if ($__jsx_profiler.postResults == null)
-		throw new Error("profiler has not been turned on");
-	return $__jsx_profiler.postResults(url, cb);
-};
-
-JSX.resetProfileResults = function () {
-	if ($__jsx_profiler.resetResults == null)
-		throw new Error("profiler has not been turned on");
-	return $__jsx_profiler.resetResults();
-};
-JSX.DEBUG = false;
-var GeneratorFunction$0 = 
-(function () {
-  try {
-    return Function('import {GeneratorFunction} from "std:iteration"; return GeneratorFunction')();
-  } catch (e) {
-    return function GeneratorFunction () {};
-  }
-})();
-var __jsx_generator_object$0 = 
-(function () {
-  function __jsx_generator_object() {
-  	this.__next = 0;
-  	this.__loop = null;
-	this.__seed = null;
-  	this.__value = undefined;
-  	this.__status = 0;	// SUSPENDED: 0, ACTIVE: 1, DEAD: 2
-  }
-
-  __jsx_generator_object.prototype.next = function (seed) {
-  	switch (this.__status) {
-  	case 0:
-  		this.__status = 1;
-  		this.__seed = seed;
-
-  		// go next!
-  		this.__loop(this.__next);
-
-  		var done = false;
-  		if (this.__next != -1) {
-  			this.__status = 0;
-  		} else {
-  			this.__status = 2;
-  			done = true;
-  		}
-  		return { value: this.__value, done: done };
-  	case 1:
-  		throw new Error("Generator is already running");
-  	case 2:
-  		throw new Error("Generator is already finished");
-  	default:
-  		throw new Error("Unexpected generator internal state");
-  	}
-  };
-
-  return __jsx_generator_object;
-}());
-function Among(s, substring_i, result) {
-	this.s_size = s.length;
-	this.s = s;
-	this.substring_i = substring_i;
-	this.result = result;
-	this.method = null;
-	this.instance = null;
-};
-
-function Among$0(s, substring_i, result, method, instance) {
-	this.s_size = s.length;
-	this.s = s;
-	this.substring_i = substring_i;
-	this.result = result;
-	this.method = method;
-	this.instance = instance;
-};
-
-$__jsx_extend([Among, Among$0], Object);
-function Stemmer() {
-};
-
-$__jsx_extend([Stemmer], Object);
-function BaseStemmer() {
-	var current$0;
-	var cursor$0;
-	var limit$0;
-	this.cache = ({  });
-	current$0 = this.current = "";
-	cursor$0 = this.cursor = 0;
-	limit$0 = this.limit = current$0.length;
-	this.limit_backward = 0;
-	this.bra = cursor$0;
-	this.ket = limit$0;
-};
-
-$__jsx_extend([BaseStemmer], Stemmer);
-BaseStemmer.prototype.setCurrent$S = function (value) {
-	var current$0;
-	var cursor$0;
-	var limit$0;
-	current$0 = this.current = value;
-	cursor$0 = this.cursor = 0;
-	limit$0 = this.limit = current$0.length;
-	this.limit_backward = 0;
-	this.bra = cursor$0;
-	this.ket = limit$0;
-};
-
-
-function BaseStemmer$setCurrent$LBaseStemmer$S($this, value) {
-	var current$0;
-	var cursor$0;
-	var limit$0;
-	current$0 = $this.current = value;
-	cursor$0 = $this.cursor = 0;
-	limit$0 = $this.limit = current$0.length;
-	$this.limit_backward = 0;
-	$this.bra = cursor$0;
-	$this.ket = limit$0;
-};
-
-BaseStemmer.setCurrent$LBaseStemmer$S = BaseStemmer$setCurrent$LBaseStemmer$S;
-
-BaseStemmer.prototype.getCurrent$ = function () {
-	return this.current;
-};
-
-
-function BaseStemmer$getCurrent$LBaseStemmer$($this) {
-	return $this.current;
-};
-
-BaseStemmer.getCurrent$LBaseStemmer$ = BaseStemmer$getCurrent$LBaseStemmer$;
-
-BaseStemmer.prototype.copy_from$LBaseStemmer$ = function (other) {
-	this.current = other.current;
-	this.cursor = other.cursor;
-	this.limit = other.limit;
-	this.limit_backward = other.limit_backward;
-	this.bra = other.bra;
-	this.ket = other.ket;
-};
-
-
-function BaseStemmer$copy_from$LBaseStemmer$LBaseStemmer$($this, other) {
-	$this.current = other.current;
-	$this.cursor = other.cursor;
-	$this.limit = other.limit;
-	$this.limit_backward = other.limit_backward;
-	$this.bra = other.bra;
-	$this.ket = other.ket;
-};
-
-BaseStemmer.copy_from$LBaseStemmer$LBaseStemmer$ = BaseStemmer$copy_from$LBaseStemmer$LBaseStemmer$;
-
-BaseStemmer.prototype.in_grouping$AIII = function (s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor >= this.limit) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$in_grouping$LBaseStemmer$AIII($this, s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor >= $this.limit) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.in_grouping$LBaseStemmer$AIII = BaseStemmer$in_grouping$LBaseStemmer$AIII;
-
-BaseStemmer.prototype.in_grouping_b$AIII = function (s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor <= this.limit_backward) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor - 1);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$in_grouping_b$LBaseStemmer$AIII($this, s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor <= $this.limit_backward) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor - 1);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.in_grouping_b$LBaseStemmer$AIII = BaseStemmer$in_grouping_b$LBaseStemmer$AIII;
-
-BaseStemmer.prototype.out_grouping$AIII = function (s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor >= this.limit) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor);
-	if (ch > max || ch < min) {
-		($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0X1 << (ch & 0x7)) === 0) {
-		($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	return false;
-};
-
-
-function BaseStemmer$out_grouping$LBaseStemmer$AIII($this, s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor >= $this.limit) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor);
-	if (ch > max || ch < min) {
-		($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0X1 << (ch & 0x7)) === 0) {
-		($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	return false;
-};
-
-BaseStemmer.out_grouping$LBaseStemmer$AIII = BaseStemmer$out_grouping$LBaseStemmer$AIII;
-
-BaseStemmer.prototype.out_grouping_b$AIII = function (s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor <= this.limit_backward) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor - 1);
-	if (ch > max || ch < min) {
-		($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	return false;
-};
-
-
-function BaseStemmer$out_grouping_b$LBaseStemmer$AIII($this, s, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor <= $this.limit_backward) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor - 1);
-	if (ch > max || ch < min) {
-		($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	ch -= min;
-	if ((s[ch >>> 3] & 0x1 << (ch & 0x7)) === 0) {
-		($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		return true;
-	}
-	return false;
-};
-
-BaseStemmer.out_grouping_b$LBaseStemmer$AIII = BaseStemmer$out_grouping_b$LBaseStemmer$AIII;
-
-BaseStemmer.prototype.in_range$II = function (min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor >= this.limit) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$in_range$LBaseStemmer$II($this, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor >= $this.limit) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.in_range$LBaseStemmer$II = BaseStemmer$in_range$LBaseStemmer$II;
-
-BaseStemmer.prototype.in_range_b$II = function (min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor <= this.limit_backward) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor - 1);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$in_range_b$LBaseStemmer$II($this, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor <= $this.limit_backward) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor - 1);
-	if (ch > max || ch < min) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.in_range_b$LBaseStemmer$II = BaseStemmer$in_range_b$LBaseStemmer$II;
-
-BaseStemmer.prototype.out_range$II = function (min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor >= this.limit) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor);
-	if (! (ch > max || ch < min)) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$out_range$LBaseStemmer$II($this, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor >= $this.limit) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor);
-	if (! (ch > max || ch < min)) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.out_range$LBaseStemmer$II = BaseStemmer$out_range$LBaseStemmer$II;
-
-BaseStemmer.prototype.out_range_b$II = function (min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if (this.cursor <= this.limit_backward) {
-		return false;
-	}
-	ch = this.current.charCodeAt(this.cursor - 1);
-	if (! (ch > max || ch < min)) {
-		return false;
-	}
-	($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-
-function BaseStemmer$out_range_b$LBaseStemmer$II($this, min, max) {
-	var ch;
-	var $__jsx_postinc_t;
-	if ($this.cursor <= $this.limit_backward) {
-		return false;
-	}
-	ch = $this.current.charCodeAt($this.cursor - 1);
-	if (! (ch > max || ch < min)) {
-		return false;
-	}
-	($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	return true;
-};
-
-BaseStemmer.out_range_b$LBaseStemmer$II = BaseStemmer$out_range_b$LBaseStemmer$II;
-
-BaseStemmer.prototype.eq_s$IS = function (s_size, s) {
-	var cursor$0;
-	if (((this.limit - this.cursor) | 0) < s_size) {
-		return false;
-	}
-	if (this.current.slice(cursor$0 = this.cursor, ((cursor$0 + s_size) | 0)) !== s) {
-		return false;
-	}
-	this.cursor = (this.cursor + s_size) | 0;
-	return true;
-};
-
-
-function BaseStemmer$eq_s$LBaseStemmer$IS($this, s_size, s) {
-	var cursor$0;
-	if ((($this.limit - $this.cursor) | 0) < s_size) {
-		return false;
-	}
-	if ($this.current.slice(cursor$0 = $this.cursor, ((cursor$0 + s_size) | 0)) !== s) {
-		return false;
-	}
-	$this.cursor = ($this.cursor + s_size) | 0;
-	return true;
-};
-
-BaseStemmer.eq_s$LBaseStemmer$IS = BaseStemmer$eq_s$LBaseStemmer$IS;
-
-BaseStemmer.prototype.eq_s_b$IS = function (s_size, s) {
-	var cursor$0;
-	if (((this.cursor - this.limit_backward) | 0) < s_size) {
-		return false;
-	}
-	if (this.current.slice((((cursor$0 = this.cursor) - s_size) | 0), cursor$0) !== s) {
-		return false;
-	}
-	this.cursor = (this.cursor - s_size) | 0;
-	return true;
-};
-
-
-function BaseStemmer$eq_s_b$LBaseStemmer$IS($this, s_size, s) {
-	var cursor$0;
-	if ((($this.cursor - $this.limit_backward) | 0) < s_size) {
-		return false;
-	}
-	if ($this.current.slice((((cursor$0 = $this.cursor) - s_size) | 0), cursor$0) !== s) {
-		return false;
-	}
-	$this.cursor = ($this.cursor - s_size) | 0;
-	return true;
-};
-
-BaseStemmer.eq_s_b$LBaseStemmer$IS = BaseStemmer$eq_s_b$LBaseStemmer$IS;
-
-BaseStemmer.prototype.eq_v$S = function (s) {
-	return BaseStemmer$eq_s$LBaseStemmer$IS(this, s.length, s);
-};
-
-
-function BaseStemmer$eq_v$LBaseStemmer$S($this, s) {
-	return BaseStemmer$eq_s$LBaseStemmer$IS($this, s.length, s);
-};
-
-BaseStemmer.eq_v$LBaseStemmer$S = BaseStemmer$eq_v$LBaseStemmer$S;
-
-BaseStemmer.prototype.eq_v_b$S = function (s) {
-	return BaseStemmer$eq_s_b$LBaseStemmer$IS(this, s.length, s);
-};
-
-
-function BaseStemmer$eq_v_b$LBaseStemmer$S($this, s) {
-	return BaseStemmer$eq_s_b$LBaseStemmer$IS($this, s.length, s);
-};
-
-BaseStemmer.eq_v_b$LBaseStemmer$S = BaseStemmer$eq_v_b$LBaseStemmer$S;
-
-BaseStemmer.prototype.find_among$ALAmong$I = function (v, v_size) {
-	var i;
-	var j;
-	var c;
-	var l;
-	var common_i;
-	var common_j;
-	var first_key_inspected;
-	var k;
-	var diff;
-	var common;
-	var w;
-	var i2;
-	var res;
-	i = 0;
-	j = v_size;
-	c = this.cursor;
-	l = this.limit;
-	common_i = 0;
-	common_j = 0;
-	first_key_inspected = false;
-	while (true) {
-		k = i + (j - i >>> 1);
-		diff = 0;
-		common = (common_i < common_j ? common_i : common_j);
-		w = v[k];
-		for (i2 = common; i2 < w.s_size; i2++) {
-			if (c + common === l) {
-				diff = -1;
-				break;
-			}
-			diff = this.current.charCodeAt(c + common) - w.s.charCodeAt(i2);
-			if (diff !== 0) {
-				break;
-			}
-			common++;
-		}
-		if (diff < 0) {
-			j = k;
-			common_j = common;
-		} else {
-			i = k;
-			common_i = common;
-		}
-		if (j - i <= 1) {
-			if (i > 0) {
-				break;
-			}
-			if (j === i) {
-				break;
-			}
-			if (first_key_inspected) {
-				break;
-			}
-			first_key_inspected = true;
-		}
-	}
-	while (true) {
-		w = v[i];
-		if (common_i >= w.s_size) {
-			this.cursor = (c + w.s_size | 0);
-			if (w.method == null) {
-				return w.result;
-			}
-			res = w.method(w.instance);
-			this.cursor = (c + w.s_size | 0);
-			if (res) {
-				return w.result;
-			}
-		}
-		i = w.substring_i;
-		if (i < 0) {
-			return 0;
-		}
-	}
-	return -1;
-};
-
-
-function BaseStemmer$find_among$LBaseStemmer$ALAmong$I($this, v, v_size) {
-	var i;
-	var j;
-	var c;
-	var l;
-	var common_i;
-	var common_j;
-	var first_key_inspected;
-	var k;
-	var diff;
-	var common;
-	var w;
-	var i2;
-	var res;
-	i = 0;
-	j = v_size;
-	c = $this.cursor;
-	l = $this.limit;
-	common_i = 0;
-	common_j = 0;
-	first_key_inspected = false;
-	while (true) {
-		k = i + (j - i >>> 1);
-		diff = 0;
-		common = (common_i < common_j ? common_i : common_j);
-		w = v[k];
-		for (i2 = common; i2 < w.s_size; i2++) {
-			if (c + common === l) {
-				diff = -1;
-				break;
-			}
-			diff = $this.current.charCodeAt(c + common) - w.s.charCodeAt(i2);
-			if (diff !== 0) {
-				break;
-			}
-			common++;
-		}
-		if (diff < 0) {
-			j = k;
-			common_j = common;
-		} else {
-			i = k;
-			common_i = common;
-		}
-		if (j - i <= 1) {
-			if (i > 0) {
-				break;
-			}
-			if (j === i) {
-				break;
-			}
-			if (first_key_inspected) {
-				break;
-			}
-			first_key_inspected = true;
-		}
-	}
-	while (true) {
-		w = v[i];
-		if (common_i >= w.s_size) {
-			$this.cursor = (c + w.s_size | 0);
-			if (w.method == null) {
-				return w.result;
-			}
-			res = w.method(w.instance);
-			$this.cursor = (c + w.s_size | 0);
-			if (res) {
-				return w.result;
-			}
-		}
-		i = w.substring_i;
-		if (i < 0) {
-			return 0;
-		}
-	}
-	return -1;
-};
-
-BaseStemmer.find_among$LBaseStemmer$ALAmong$I = BaseStemmer$find_among$LBaseStemmer$ALAmong$I;
-
-BaseStemmer.prototype.find_among_b$ALAmong$I = function (v, v_size) {
-	var i;
-	var j;
-	var c;
-	var lb;
-	var common_i;
-	var common_j;
-	var first_key_inspected;
-	var k;
-	var diff;
-	var common;
-	var w;
-	var i2;
-	var res;
-	i = 0;
-	j = v_size;
-	c = this.cursor;
-	lb = this.limit_backward;
-	common_i = 0;
-	common_j = 0;
-	first_key_inspected = false;
-	while (true) {
-		k = i + (j - i >> 1);
-		diff = 0;
-		common = (common_i < common_j ? common_i : common_j);
-		w = v[k];
-		for (i2 = w.s_size - 1 - common; i2 >= 0; i2--) {
-			if (c - common === lb) {
-				diff = -1;
-				break;
-			}
-			diff = this.current.charCodeAt(c - 1 - common) - w.s.charCodeAt(i2);
-			if (diff !== 0) {
-				break;
-			}
-			common++;
-		}
-		if (diff < 0) {
-			j = k;
-			common_j = common;
-		} else {
-			i = k;
-			common_i = common;
-		}
-		if (j - i <= 1) {
-			if (i > 0) {
-				break;
-			}
-			if (j === i) {
-				break;
-			}
-			if (first_key_inspected) {
-				break;
-			}
-			first_key_inspected = true;
-		}
-	}
-	while (true) {
-		w = v[i];
-		if (common_i >= w.s_size) {
-			this.cursor = (c - w.s_size | 0);
-			if (w.method == null) {
-				return w.result;
-			}
-			res = w.method(this);
-			this.cursor = (c - w.s_size | 0);
-			if (res) {
-				return w.result;
-			}
-		}
-		i = w.substring_i;
-		if (i < 0) {
-			return 0;
-		}
-	}
-	return -1;
-};
-
-
-function BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, v, v_size) {
-	var i;
-	var j;
-	var c;
-	var lb;
-	var common_i;
-	var common_j;
-	var first_key_inspected;
-	var k;
-	var diff;
-	var common;
-	var w;
-	var i2;
-	var res;
-	i = 0;
-	j = v_size;
-	c = $this.cursor;
-	lb = $this.limit_backward;
-	common_i = 0;
-	common_j = 0;
-	first_key_inspected = false;
-	while (true) {
-		k = i + (j - i >> 1);
-		diff = 0;
-		common = (common_i < common_j ? common_i : common_j);
-		w = v[k];
-		for (i2 = w.s_size - 1 - common; i2 >= 0; i2--) {
-			if (c - common === lb) {
-				diff = -1;
-				break;
-			}
-			diff = $this.current.charCodeAt(c - 1 - common) - w.s.charCodeAt(i2);
-			if (diff !== 0) {
-				break;
-			}
-			common++;
-		}
-		if (diff < 0) {
-			j = k;
-			common_j = common;
-		} else {
-			i = k;
-			common_i = common;
-		}
-		if (j - i <= 1) {
-			if (i > 0) {
-				break;
-			}
-			if (j === i) {
-				break;
-			}
-			if (first_key_inspected) {
-				break;
-			}
-			first_key_inspected = true;
-		}
-	}
-	while (true) {
-		w = v[i];
-		if (common_i >= w.s_size) {
-			$this.cursor = (c - w.s_size | 0);
-			if (w.method == null) {
-				return w.result;
-			}
-			res = w.method($this);
-			$this.cursor = (c - w.s_size | 0);
-			if (res) {
-				return w.result;
-			}
-		}
-		i = w.substring_i;
-		if (i < 0) {
-			return 0;
-		}
-	}
-	return -1;
-};
-
-BaseStemmer.find_among_b$LBaseStemmer$ALAmong$I = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I;
-
-BaseStemmer.prototype.replace_s$IIS = function (c_bra, c_ket, s) {
-	var adjustment;
-	adjustment = ((s.length - (((c_ket - c_bra) | 0))) | 0);
-	this.current = this.current.slice(0, c_bra) + s + this.current.slice(c_ket);
-	this.limit = (this.limit + adjustment) | 0;
-	if (this.cursor >= c_ket) {
-		this.cursor = (this.cursor + adjustment) | 0;
-	} else if (this.cursor > c_bra) {
-		this.cursor = c_bra;
-	}
-	return (adjustment | 0);
-};
-
-
-function BaseStemmer$replace_s$LBaseStemmer$IIS($this, c_bra, c_ket, s) {
-	var adjustment;
-	adjustment = ((s.length - (((c_ket - c_bra) | 0))) | 0);
-	$this.current = $this.current.slice(0, c_bra) + s + $this.current.slice(c_ket);
-	$this.limit = ($this.limit + adjustment) | 0;
-	if ($this.cursor >= c_ket) {
-		$this.cursor = ($this.cursor + adjustment) | 0;
-	} else if ($this.cursor > c_bra) {
-		$this.cursor = c_bra;
-	}
-	return (adjustment | 0);
+// This file was generated automatically by the Snowball to Javascript compiler
+// http://snowballstem.org/
+
+/**@constructor*/
+PorterStemmer = function() {
+    var base = new BaseStemmer();
+    /** @const */ var a_0 = [
+        ["s", -1, 3],
+        ["ies", 0, 2],
+        ["sses", 0, 1],
+        ["ss", 0, -1]
+    ];
+
+    /** @const */ var a_1 = [
+        ["", -1, 3],
+        ["bb", 0, 2],
+        ["dd", 0, 2],
+        ["ff", 0, 2],
+        ["gg", 0, 2],
+        ["bl", 0, 1],
+        ["mm", 0, 2],
+        ["nn", 0, 2],
+        ["pp", 0, 2],
+        ["rr", 0, 2],
+        ["at", 0, 1],
+        ["tt", 0, 2],
+        ["iz", 0, 1]
+    ];
+
+    /** @const */ var a_2 = [
+        ["ed", -1, 2],
+        ["eed", 0, 1],
+        ["ing", -1, 2]
+    ];
+
+    /** @const */ var a_3 = [
+        ["anci", -1, 3],
+        ["enci", -1, 2],
+        ["abli", -1, 4],
+        ["eli", -1, 6],
+        ["alli", -1, 9],
+        ["ousli", -1, 11],
+        ["entli", -1, 5],
+        ["aliti", -1, 9],
+        ["biliti", -1, 13],
+        ["iviti", -1, 12],
+        ["tional", -1, 1],
+        ["ational", 10, 8],
+        ["alism", -1, 9],
+        ["ation", -1, 8],
+        ["ization", 13, 7],
+        ["izer", -1, 7],
+        ["ator", -1, 8],
+        ["iveness", -1, 12],
+        ["fulness", -1, 10],
+        ["ousness", -1, 11]
+    ];
+
+    /** @const */ var a_4 = [
+        ["icate", -1, 2],
+        ["ative", -1, 3],
+        ["alize", -1, 1],
+        ["iciti", -1, 2],
+        ["ical", -1, 2],
+        ["ful", -1, 3],
+        ["ness", -1, 3]
+    ];
+
+    /** @const */ var a_5 = [
+        ["ic", -1, 1],
+        ["ance", -1, 1],
+        ["ence", -1, 1],
+        ["able", -1, 1],
+        ["ible", -1, 1],
+        ["ate", -1, 1],
+        ["ive", -1, 1],
+        ["ize", -1, 1],
+        ["iti", -1, 1],
+        ["al", -1, 1],
+        ["ism", -1, 1],
+        ["ion", -1, 2],
+        ["er", -1, 1],
+        ["ous", -1, 1],
+        ["ant", -1, 1],
+        ["ent", -1, 1],
+        ["ment", 15, 1],
+        ["ement", 16, 1],
+        ["ou", -1, 1]
+    ];
+
+    /** @const */ var /** Array<int> */ g_v = [17, 65, 16, 1];
+
+    /** @const */ var /** Array<int> */ g_v_WXY = [1, 17, 65, 208, 1];
+
+    var /** boolean */ B_Y_found = false;
+    var /** number */ I_p2 = 0;
+    var /** number */ I_p1 = 0;
+
+
+    /** @return {boolean} */
+    function r_shortv() {
+        // (, line 19
+        if (!(base.out_grouping_b(g_v_WXY, 89, 121)))
+        {
+            return false;
+        }
+        if (!(base.in_grouping_b(g_v, 97, 121)))
+        {
+            return false;
+        }
+        if (!(base.out_grouping_b(g_v, 97, 121)))
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_R1() {
+        if (!(I_p1 <= base.cursor))
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_R2() {
+        if (!(I_p2 <= base.cursor))
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_1a() {
+        var /** number */ among_var;
+        // (, line 24
+        // [, line 25
+        base.ket = base.cursor;
+        // substring, line 25
+        among_var = base.find_among_b(a_0);
+        if (among_var == 0)
+        {
+            return false;
+        }
+        // ], line 25
+        base.bra = base.cursor;
+        switch (among_var) {
+            case 1:
+                // (, line 26
+                // <-, line 26
+                if (!base.slice_from("ss"))
+                {
+                    return false;
+                }
+                break;
+            case 2:
+                // (, line 27
+                // <-, line 27
+                if (!base.slice_from("i"))
+                {
+                    return false;
+                }
+                break;
+            case 3:
+                // (, line 29
+                // delete, line 29
+                if (!base.slice_del())
+                {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_1b() {
+        var /** number */ among_var;
+        // (, line 33
+        // [, line 34
+        base.ket = base.cursor;
+        // substring, line 34
+        among_var = base.find_among_b(a_2);
+        if (among_var == 0)
+        {
+            return false;
+        }
+        // ], line 34
+        base.bra = base.cursor;
+        switch (among_var) {
+            case 1:
+                // (, line 35
+                // call R1, line 35
+                if (!r_R1())
+                {
+                    return false;
+                }
+                // <-, line 35
+                if (!base.slice_from("ee"))
+                {
+                    return false;
+                }
+                break;
+            case 2:
+                // (, line 37
+                // test, line 38
+                var /** number */ v_1 = base.limit - base.cursor;
+                // gopast, line 38
+                golab0: while(true)
+                {
+                    lab1: {
+                        if (!(base.in_grouping_b(g_v, 97, 121)))
+                        {
+                            break lab1;
+                        }
+                        break golab0;
+                    }
+                    if (base.cursor <= base.limit_backward)
+                    {
+                        return false;
+                    }
+                    base.cursor--;
+                }
+                base.cursor = base.limit - v_1;
+                // delete, line 38
+                if (!base.slice_del())
+                {
+                    return false;
+                }
+                // test, line 39
+                var /** number */ v_3 = base.limit - base.cursor;
+                // substring, line 39
+                among_var = base.find_among_b(a_1);
+                if (among_var == 0)
+                {
+                    return false;
+                }
+                base.cursor = base.limit - v_3;
+                switch (among_var) {
+                    case 1:
+                        // (, line 41
+                        // <+, line 41
+                        {
+                            var /** number */ c1 = base.cursor;
+                            base.insert(base.cursor, base.cursor, "e");
+                            base.cursor = c1;
+                        }
+                        break;
+                    case 2:
+                        // (, line 44
+                        // [, line 44
+                        base.ket = base.cursor;
+                        // next, line 44
+                        if (base.cursor <= base.limit_backward)
+                        {
+                            return false;
+                        }
+                        base.cursor--;
+                        // ], line 44
+                        base.bra = base.cursor;
+                        // delete, line 44
+                        if (!base.slice_del())
+                        {
+                            return false;
+                        }
+                        break;
+                    case 3:
+                        // (, line 45
+                        // atmark, line 45
+                        if (base.cursor != I_p1)
+                        {
+                            return false;
+                        }
+                        // test, line 45
+                        var /** number */ v_4 = base.limit - base.cursor;
+                        // call shortv, line 45
+                        if (!r_shortv())
+                        {
+                            return false;
+                        }
+                        base.cursor = base.limit - v_4;
+                        // <+, line 45
+                        {
+                            var /** number */ c2 = base.cursor;
+                            base.insert(base.cursor, base.cursor, "e");
+                            base.cursor = c2;
+                        }
+                        break;
+                }
+                break;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_1c() {
+        // (, line 51
+        // [, line 52
+        base.ket = base.cursor;
+        // or, line 52
+        lab0: {
+            var /** number */ v_1 = base.limit - base.cursor;
+            lab1: {
+                // literal, line 52
+                if (!(base.eq_s_b("y")))
+                {
+                    break lab1;
+                }
+                break lab0;
+            }
+            base.cursor = base.limit - v_1;
+            // literal, line 52
+            if (!(base.eq_s_b("Y")))
+            {
+                return false;
+            }
+        }
+        // ], line 52
+        base.bra = base.cursor;
+        // gopast, line 53
+        golab2: while(true)
+        {
+            lab3: {
+                if (!(base.in_grouping_b(g_v, 97, 121)))
+                {
+                    break lab3;
+                }
+                break golab2;
+            }
+            if (base.cursor <= base.limit_backward)
+            {
+                return false;
+            }
+            base.cursor--;
+        }
+        // <-, line 54
+        if (!base.slice_from("i"))
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_2() {
+        var /** number */ among_var;
+        // (, line 57
+        // [, line 58
+        base.ket = base.cursor;
+        // substring, line 58
+        among_var = base.find_among_b(a_3);
+        if (among_var == 0)
+        {
+            return false;
+        }
+        // ], line 58
+        base.bra = base.cursor;
+        // call R1, line 58
+        if (!r_R1())
+        {
+            return false;
+        }
+        switch (among_var) {
+            case 1:
+                // (, line 59
+                // <-, line 59
+                if (!base.slice_from("tion"))
+                {
+                    return false;
+                }
+                break;
+            case 2:
+                // (, line 60
+                // <-, line 60
+                if (!base.slice_from("ence"))
+                {
+                    return false;
+                }
+                break;
+            case 3:
+                // (, line 61
+                // <-, line 61
+                if (!base.slice_from("ance"))
+                {
+                    return false;
+                }
+                break;
+            case 4:
+                // (, line 62
+                // <-, line 62
+                if (!base.slice_from("able"))
+                {
+                    return false;
+                }
+                break;
+            case 5:
+                // (, line 63
+                // <-, line 63
+                if (!base.slice_from("ent"))
+                {
+                    return false;
+                }
+                break;
+            case 6:
+                // (, line 64
+                // <-, line 64
+                if (!base.slice_from("e"))
+                {
+                    return false;
+                }
+                break;
+            case 7:
+                // (, line 66
+                // <-, line 66
+                if (!base.slice_from("ize"))
+                {
+                    return false;
+                }
+                break;
+            case 8:
+                // (, line 68
+                // <-, line 68
+                if (!base.slice_from("ate"))
+                {
+                    return false;
+                }
+                break;
+            case 9:
+                // (, line 69
+                // <-, line 69
+                if (!base.slice_from("al"))
+                {
+                    return false;
+                }
+                break;
+            case 10:
+                // (, line 72
+                // <-, line 72
+                if (!base.slice_from("ful"))
+                {
+                    return false;
+                }
+                break;
+            case 11:
+                // (, line 74
+                // <-, line 74
+                if (!base.slice_from("ous"))
+                {
+                    return false;
+                }
+                break;
+            case 12:
+                // (, line 76
+                // <-, line 76
+                if (!base.slice_from("ive"))
+                {
+                    return false;
+                }
+                break;
+            case 13:
+                // (, line 77
+                // <-, line 77
+                if (!base.slice_from("ble"))
+                {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_3() {
+        var /** number */ among_var;
+        // (, line 81
+        // [, line 82
+        base.ket = base.cursor;
+        // substring, line 82
+        among_var = base.find_among_b(a_4);
+        if (among_var == 0)
+        {
+            return false;
+        }
+        // ], line 82
+        base.bra = base.cursor;
+        // call R1, line 82
+        if (!r_R1())
+        {
+            return false;
+        }
+        switch (among_var) {
+            case 1:
+                // (, line 83
+                // <-, line 83
+                if (!base.slice_from("al"))
+                {
+                    return false;
+                }
+                break;
+            case 2:
+                // (, line 85
+                // <-, line 85
+                if (!base.slice_from("ic"))
+                {
+                    return false;
+                }
+                break;
+            case 3:
+                // (, line 87
+                // delete, line 87
+                if (!base.slice_del())
+                {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_4() {
+        var /** number */ among_var;
+        // (, line 91
+        // [, line 92
+        base.ket = base.cursor;
+        // substring, line 92
+        among_var = base.find_among_b(a_5);
+        if (among_var == 0)
+        {
+            return false;
+        }
+        // ], line 92
+        base.bra = base.cursor;
+        // call R2, line 92
+        if (!r_R2())
+        {
+            return false;
+        }
+        switch (among_var) {
+            case 1:
+                // (, line 95
+                // delete, line 95
+                if (!base.slice_del())
+                {
+                    return false;
+                }
+                break;
+            case 2:
+                // (, line 96
+                // or, line 96
+                lab0: {
+                    var /** number */ v_1 = base.limit - base.cursor;
+                    lab1: {
+                        // literal, line 96
+                        if (!(base.eq_s_b("s")))
+                        {
+                            break lab1;
+                        }
+                        break lab0;
+                    }
+                    base.cursor = base.limit - v_1;
+                    // literal, line 96
+                    if (!(base.eq_s_b("t")))
+                    {
+                        return false;
+                    }
+                }
+                // delete, line 96
+                if (!base.slice_del())
+                {
+                    return false;
+                }
+                break;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_5a() {
+        // (, line 100
+        // [, line 101
+        base.ket = base.cursor;
+        // literal, line 101
+        if (!(base.eq_s_b("e")))
+        {
+            return false;
+        }
+        // ], line 101
+        base.bra = base.cursor;
+        // or, line 102
+        lab0: {
+            var /** number */ v_1 = base.limit - base.cursor;
+            lab1: {
+                // call R2, line 102
+                if (!r_R2())
+                {
+                    break lab1;
+                }
+                break lab0;
+            }
+            base.cursor = base.limit - v_1;
+            // (, line 102
+            // call R1, line 102
+            if (!r_R1())
+            {
+                return false;
+            }
+            // not, line 102
+            {
+                var /** number */ v_2 = base.limit - base.cursor;
+                lab2: {
+                    // call shortv, line 102
+                    if (!r_shortv())
+                    {
+                        break lab2;
+                    }
+                    return false;
+                }
+                base.cursor = base.limit - v_2;
+            }
+        }
+        // delete, line 103
+        if (!base.slice_del())
+        {
+            return false;
+        }
+        return true;
+    };
+
+    /** @return {boolean} */
+    function r_Step_5b() {
+        // (, line 106
+        // [, line 107
+        base.ket = base.cursor;
+        // literal, line 107
+        if (!(base.eq_s_b("l")))
+        {
+            return false;
+        }
+        // ], line 107
+        base.bra = base.cursor;
+        // call R2, line 108
+        if (!r_R2())
+        {
+            return false;
+        }
+        // literal, line 108
+        if (!(base.eq_s_b("l")))
+        {
+            return false;
+        }
+        // delete, line 109
+        if (!base.slice_del())
+        {
+            return false;
+        }
+        return true;
+    };
+
+    this.stem = /** @return {boolean} */ function() {
+        // (, line 113
+        // unset Y_found, line 115
+        B_Y_found = false;
+        // do, line 116
+        var /** number */ v_1 = base.cursor;
+        lab0: {
+            // (, line 116
+            // [, line 116
+            base.bra = base.cursor;
+            // literal, line 116
+            if (!(base.eq_s("y")))
+            {
+                break lab0;
+            }
+            // ], line 116
+            base.ket = base.cursor;
+            // <-, line 116
+            if (!base.slice_from("Y"))
+            {
+                return false;
+            }
+            // set Y_found, line 116
+            B_Y_found = true;
+        }
+        base.cursor = v_1;
+        // do, line 117
+        var /** number */ v_2 = base.cursor;
+        lab1: {
+            // repeat, line 117
+            replab2: while(true)
+            {
+                var /** number */ v_3 = base.cursor;
+                lab3: {
+                    // (, line 117
+                    // goto, line 117
+                    golab4: while(true)
+                    {
+                        var /** number */ v_4 = base.cursor;
+                        lab5: {
+                            // (, line 117
+                            if (!(base.in_grouping(g_v, 97, 121)))
+                            {
+                                break lab5;
+                            }
+                            // [, line 117
+                            base.bra = base.cursor;
+                            // literal, line 117
+                            if (!(base.eq_s("y")))
+                            {
+                                break lab5;
+                            }
+                            // ], line 117
+                            base.ket = base.cursor;
+                            base.cursor = v_4;
+                            break golab4;
+                        }
+                        base.cursor = v_4;
+                        if (base.cursor >= base.limit)
+                        {
+                            break lab3;
+                        }
+                        base.cursor++;
+                    }
+                    // <-, line 117
+                    if (!base.slice_from("Y"))
+                    {
+                        return false;
+                    }
+                    // set Y_found, line 117
+                    B_Y_found = true;
+                    continue replab2;
+                }
+                base.cursor = v_3;
+                break replab2;
+            }
+        }
+        base.cursor = v_2;
+        I_p1 = base.limit;
+        I_p2 = base.limit;
+        // do, line 121
+        var /** number */ v_5 = base.cursor;
+        lab6: {
+            // (, line 121
+            // gopast, line 122
+            golab7: while(true)
+            {
+                lab8: {
+                    if (!(base.in_grouping(g_v, 97, 121)))
+                    {
+                        break lab8;
+                    }
+                    break golab7;
+                }
+                if (base.cursor >= base.limit)
+                {
+                    break lab6;
+                }
+                base.cursor++;
+            }
+            // gopast, line 122
+            golab9: while(true)
+            {
+                lab10: {
+                    if (!(base.out_grouping(g_v, 97, 121)))
+                    {
+                        break lab10;
+                    }
+                    break golab9;
+                }
+                if (base.cursor >= base.limit)
+                {
+                    break lab6;
+                }
+                base.cursor++;
+            }
+            // setmark p1, line 122
+            I_p1 = base.cursor;
+            // gopast, line 123
+            golab11: while(true)
+            {
+                lab12: {
+                    if (!(base.in_grouping(g_v, 97, 121)))
+                    {
+                        break lab12;
+                    }
+                    break golab11;
+                }
+                if (base.cursor >= base.limit)
+                {
+                    break lab6;
+                }
+                base.cursor++;
+            }
+            // gopast, line 123
+            golab13: while(true)
+            {
+                lab14: {
+                    if (!(base.out_grouping(g_v, 97, 121)))
+                    {
+                        break lab14;
+                    }
+                    break golab13;
+                }
+                if (base.cursor >= base.limit)
+                {
+                    break lab6;
+                }
+                base.cursor++;
+            }
+            // setmark p2, line 123
+            I_p2 = base.cursor;
+        }
+        base.cursor = v_5;
+        // backwards, line 126
+        base.limit_backward = base.cursor; base.cursor = base.limit;
+        // (, line 126
+        // do, line 127
+        var /** number */ v_10 = base.limit - base.cursor;
+        lab15: {
+            // call Step_1a, line 127
+            if (!r_Step_1a())
+            {
+                break lab15;
+            }
+        }
+        base.cursor = base.limit - v_10;
+        // do, line 128
+        var /** number */ v_11 = base.limit - base.cursor;
+        lab16: {
+            // call Step_1b, line 128
+            if (!r_Step_1b())
+            {
+                break lab16;
+            }
+        }
+        base.cursor = base.limit - v_11;
+        // do, line 129
+        var /** number */ v_12 = base.limit - base.cursor;
+        lab17: {
+            // call Step_1c, line 129
+            if (!r_Step_1c())
+            {
+                break lab17;
+            }
+        }
+        base.cursor = base.limit - v_12;
+        // do, line 130
+        var /** number */ v_13 = base.limit - base.cursor;
+        lab18: {
+            // call Step_2, line 130
+            if (!r_Step_2())
+            {
+                break lab18;
+            }
+        }
+        base.cursor = base.limit - v_13;
+        // do, line 131
+        var /** number */ v_14 = base.limit - base.cursor;
+        lab19: {
+            // call Step_3, line 131
+            if (!r_Step_3())
+            {
+                break lab19;
+            }
+        }
+        base.cursor = base.limit - v_14;
+        // do, line 132
+        var /** number */ v_15 = base.limit - base.cursor;
+        lab20: {
+            // call Step_4, line 132
+            if (!r_Step_4())
+            {
+                break lab20;
+            }
+        }
+        base.cursor = base.limit - v_15;
+        // do, line 133
+        var /** number */ v_16 = base.limit - base.cursor;
+        lab21: {
+            // call Step_5a, line 133
+            if (!r_Step_5a())
+            {
+                break lab21;
+            }
+        }
+        base.cursor = base.limit - v_16;
+        // do, line 134
+        var /** number */ v_17 = base.limit - base.cursor;
+        lab22: {
+            // call Step_5b, line 134
+            if (!r_Step_5b())
+            {
+                break lab22;
+            }
+        }
+        base.cursor = base.limit - v_17;
+        base.cursor = base.limit_backward;
+        // do, line 137
+        var /** number */ v_18 = base.cursor;
+        lab23: {
+            // (, line 137
+            // Boolean test Y_found, line 137
+            if (!B_Y_found)
+            {
+                break lab23;
+            }
+            // repeat, line 137
+            replab24: while(true)
+            {
+                var /** number */ v_19 = base.cursor;
+                lab25: {
+                    // (, line 137
+                    // goto, line 137
+                    golab26: while(true)
+                    {
+                        var /** number */ v_20 = base.cursor;
+                        lab27: {
+                            // (, line 137
+                            // [, line 137
+                            base.bra = base.cursor;
+                            // literal, line 137
+                            if (!(base.eq_s("Y")))
+                            {
+                                break lab27;
+                            }
+                            // ], line 137
+                            base.ket = base.cursor;
+                            base.cursor = v_20;
+                            break golab26;
+                        }
+                        base.cursor = v_20;
+                        if (base.cursor >= base.limit)
+                        {
+                            break lab25;
+                        }
+                        base.cursor++;
+                    }
+                    // <-, line 137
+                    if (!base.slice_from("y"))
+                    {
+                        return false;
+                    }
+                    continue replab24;
+                }
+                base.cursor = v_19;
+                break replab24;
+            }
+        }
+        base.cursor = v_18;
+        return true;
+    };
+
+    /**@return{string}*/
+    this['stemWord'] = function(/**string*/word) {
+        base.setCurrent(word);
+        this.stem();
+        return base.getCurrent();
+    };
 };
-
-BaseStemmer.replace_s$LBaseStemmer$IIS = BaseStemmer$replace_s$LBaseStemmer$IIS;
-
-BaseStemmer.prototype.slice_check$ = function () {
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	return ((bra$0 = this.bra) < 0 || bra$0 > (ket$0 = this.ket) || ket$0 > (limit$0 = this.limit) || limit$0 > this.current.length ? false : true);
-};
-
-
-function BaseStemmer$slice_check$LBaseStemmer$($this) {
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	return ((bra$0 = $this.bra) < 0 || bra$0 > (ket$0 = $this.ket) || ket$0 > (limit$0 = $this.limit) || limit$0 > $this.current.length ? false : true);
-};
-
-BaseStemmer.slice_check$LBaseStemmer$ = BaseStemmer$slice_check$LBaseStemmer$;
-
-BaseStemmer.prototype.slice_from$S = function (s) {
-	var result;
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	result = false;
-	if ((bra$0 = this.bra) < 0 || bra$0 > (ket$0 = this.ket) || ket$0 > (limit$0 = this.limit) || limit$0 > this.current.length ? false : true) {
-		BaseStemmer$replace_s$LBaseStemmer$IIS(this, this.bra, this.ket, s);
-		result = true;
-	}
-	return result;
-};
-
-
-function BaseStemmer$slice_from$LBaseStemmer$S($this, s) {
-	var result;
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	result = false;
-	if ((bra$0 = $this.bra) < 0 || bra$0 > (ket$0 = $this.ket) || ket$0 > (limit$0 = $this.limit) || limit$0 > $this.current.length ? false : true) {
-		BaseStemmer$replace_s$LBaseStemmer$IIS($this, $this.bra, $this.ket, s);
-		result = true;
-	}
-	return result;
-};
-
-BaseStemmer.slice_from$LBaseStemmer$S = BaseStemmer$slice_from$LBaseStemmer$S;
-
-BaseStemmer.prototype.slice_del$ = function () {
-	return BaseStemmer$slice_from$LBaseStemmer$S(this, "");
-};
-
-
-function BaseStemmer$slice_del$LBaseStemmer$($this) {
-	return BaseStemmer$slice_from$LBaseStemmer$S($this, "");
-};
-
-BaseStemmer.slice_del$LBaseStemmer$ = BaseStemmer$slice_del$LBaseStemmer$;
-
-BaseStemmer.prototype.insert$IIS = function (c_bra, c_ket, s) {
-	var adjustment;
-	adjustment = BaseStemmer$replace_s$LBaseStemmer$IIS(this, c_bra, c_ket, s);
-	if (c_bra <= this.bra) {
-		this.bra = (this.bra + adjustment) | 0;
-	}
-	if (c_bra <= this.ket) {
-		this.ket = (this.ket + adjustment) | 0;
-	}
-};
-
-
-function BaseStemmer$insert$LBaseStemmer$IIS($this, c_bra, c_ket, s) {
-	var adjustment;
-	adjustment = BaseStemmer$replace_s$LBaseStemmer$IIS($this, c_bra, c_ket, s);
-	if (c_bra <= $this.bra) {
-		$this.bra = ($this.bra + adjustment) | 0;
-	}
-	if (c_bra <= $this.ket) {
-		$this.ket = ($this.ket + adjustment) | 0;
-	}
-};
-
-BaseStemmer.insert$LBaseStemmer$IIS = BaseStemmer$insert$LBaseStemmer$IIS;
-
-BaseStemmer.prototype.slice_to$S = function (s) {
-	var result;
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	result = '';
-	if ((bra$0 = this.bra) < 0 || bra$0 > (ket$0 = this.ket) || ket$0 > (limit$0 = this.limit) || limit$0 > this.current.length ? false : true) {
-		result = this.current.slice(this.bra, this.ket);
-	}
-	return result;
-};
-
-
-function BaseStemmer$slice_to$LBaseStemmer$S($this, s) {
-	var result;
-	var bra$0;
-	var ket$0;
-	var limit$0;
-	result = '';
-	if ((bra$0 = $this.bra) < 0 || bra$0 > (ket$0 = $this.ket) || ket$0 > (limit$0 = $this.limit) || limit$0 > $this.current.length ? false : true) {
-		result = $this.current.slice($this.bra, $this.ket);
-	}
-	return result;
-};
-
-BaseStemmer.slice_to$LBaseStemmer$S = BaseStemmer$slice_to$LBaseStemmer$S;
-
-BaseStemmer.prototype.assign_to$S = function (s) {
-	return this.current.slice(0, this.limit);
-};
-
-
-function BaseStemmer$assign_to$LBaseStemmer$S($this, s) {
-	return $this.current.slice(0, $this.limit);
-};
-
-BaseStemmer.assign_to$LBaseStemmer$S = BaseStemmer$assign_to$LBaseStemmer$S;
-
-BaseStemmer.prototype.stem$ = function () {
-	return false;
-};
-
-
-BaseStemmer.prototype.stemWord$S = function (word) {
-	var result;
-	var current$0;
-	var cursor$0;
-	var limit$0;
-	result = this.cache['.' + word];
-	if (result == null) {
-		current$0 = this.current = word;
-		cursor$0 = this.cursor = 0;
-		limit$0 = this.limit = current$0.length;
-		this.limit_backward = 0;
-		this.bra = cursor$0;
-		this.ket = limit$0;
-		this.stem$();
-		result = this.current;
-		this.cache['.' + word] = result;
-	}
-	return result;
-};
-
-BaseStemmer.prototype.stemWord = BaseStemmer.prototype.stemWord$S;
-
-BaseStemmer.prototype.stemWords$AS = function (words) {
-	var results;
-	var i;
-	var word;
-	var result;
-	var current$0;
-	var cursor$0;
-	var limit$0;
-	results = [  ];
-	for (i = 0; i < words.length; i++) {
-		word = words[i];
-		result = this.cache['.' + word];
-		if (result == null) {
-			current$0 = this.current = word;
-			cursor$0 = this.cursor = 0;
-			limit$0 = this.limit = current$0.length;
-			this.limit_backward = 0;
-			this.bra = cursor$0;
-			this.ket = limit$0;
-			this.stem$();
-			result = this.current;
-			this.cache['.' + word] = result;
-		}
-		results.push(result);
-	}
-	return results;
-};
-
-BaseStemmer.prototype.stemWords = BaseStemmer.prototype.stemWords$AS;
-
-function PorterStemmer() {
-	BaseStemmer.call(this);
-	this.B_Y_found = false;
-	this.I_p2 = 0;
-	this.I_p1 = 0;
-};
-
-$__jsx_extend([PorterStemmer], BaseStemmer);
-PorterStemmer.prototype.copy_from$LPorterStemmer$ = function (other) {
-	this.B_Y_found = other.B_Y_found;
-	this.I_p2 = other.I_p2;
-	this.I_p1 = other.I_p1;
-	BaseStemmer$copy_from$LBaseStemmer$LBaseStemmer$(this, other);
-};
-
-PorterStemmer.prototype.copy_from = PorterStemmer.prototype.copy_from$LPorterStemmer$;
-
-PorterStemmer.prototype.r_shortv$ = function () {
-	return (! BaseStemmer$out_grouping_b$LBaseStemmer$AIII(this, PorterStemmer.g_v_WXY, 89, 121) ? false : ! BaseStemmer$in_grouping_b$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121) ? false : ! BaseStemmer$out_grouping_b$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121) ? false : true);
-};
-
-PorterStemmer.prototype.r_shortv = PorterStemmer.prototype.r_shortv$;
-
-function PorterStemmer$r_shortv$LPorterStemmer$($this) {
-	return (! BaseStemmer$out_grouping_b$LBaseStemmer$AIII($this, PorterStemmer.g_v_WXY, 89, 121) ? false : ! BaseStemmer$in_grouping_b$LBaseStemmer$AIII($this, PorterStemmer.g_v, 97, 121) ? false : ! BaseStemmer$out_grouping_b$LBaseStemmer$AIII($this, PorterStemmer.g_v, 97, 121) ? false : true);
-};
-
-PorterStemmer.r_shortv$LPorterStemmer$ = PorterStemmer$r_shortv$LPorterStemmer$;
-
-PorterStemmer.prototype.r_R1$ = function () {
-	return (! (this.I_p1 <= this.cursor) ? false : true);
-};
-
-PorterStemmer.prototype.r_R1 = PorterStemmer.prototype.r_R1$;
-
-function PorterStemmer$r_R1$LPorterStemmer$($this) {
-	return (! ($this.I_p1 <= $this.cursor) ? false : true);
-};
-
-PorterStemmer.r_R1$LPorterStemmer$ = PorterStemmer$r_R1$LPorterStemmer$;
-
-PorterStemmer.prototype.r_R2$ = function () {
-	return (! (this.I_p2 <= this.cursor) ? false : true);
-};
-
-PorterStemmer.prototype.r_R2 = PorterStemmer.prototype.r_R2$;
-
-function PorterStemmer$r_R2$LPorterStemmer$($this) {
-	return (! ($this.I_p2 <= $this.cursor) ? false : true);
-};
-
-PorterStemmer.r_R2$LPorterStemmer$ = PorterStemmer$r_R2$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_1a$ = function () {
-	var among_var;
-	this.ket = this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_0, 4);
-	if (among_var === 0) {
-		return false;
-	}
-	this.bra = this.cursor;
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ss")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "i")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.prototype.r_Step_1a = PorterStemmer.prototype.r_Step_1a$;
-
-function PorterStemmer$r_Step_1a$LPorterStemmer$($this) {
-	var among_var;
-	$this.ket = $this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_0, 4);
-	if (among_var === 0) {
-		return false;
-	}
-	$this.bra = $this.cursor;
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ss")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "i")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.r_Step_1a$LPorterStemmer$ = PorterStemmer$r_Step_1a$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_1b$ = function () {
-	var among_var;
-	var v_1;
-	var v_3;
-	var v_4;
-	var lab1;
-	var c;
-	var c_bra$0;
-	var adjustment$0;
-	var c_bra$1;
-	var adjustment$1;
-	var cursor$0;
-	var cursor$1;
-	var cursor$2;
-	var $__jsx_postinc_t;
-	this.ket = this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_2, 3);
-	if (among_var === 0) {
-		return false;
-	}
-	this.bra = this.cursor;
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! (! (this.I_p1 <= this.cursor) ? false : true)) {
-			return false;
-		}
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ee")) {
-			return false;
-		}
-		break;
-	case 2:
-		v_1 = ((this.limit - this.cursor) | 0);
-	golab0:
-		while (true) {
-			lab1 = true;
-		lab1:
-			while (lab1 === true) {
-				lab1 = false;
-				if (! BaseStemmer$in_grouping_b$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-					break lab1;
-				}
-				break golab0;
-			}
-			if (this.cursor <= this.limit_backward) {
-				return false;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		}
-		this.cursor = ((this.limit - v_1) | 0);
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-			return false;
-		}
-		v_3 = ((this.limit - this.cursor) | 0);
-		among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_1, 13);
-		if (among_var === 0) {
-			return false;
-		}
-		this.cursor = ((this.limit - v_3) | 0);
-		switch (among_var) {
-		case 0:
-			return false;
-		case 1:
-			c = cursor$0 = this.cursor;
-			c_bra$0 = cursor$0;
-			adjustment$0 = BaseStemmer$replace_s$LBaseStemmer$IIS(this, cursor$0, cursor$0, "e");
-			if (cursor$0 <= this.bra) {
-				this.bra = (this.bra + adjustment$0) | 0;
-			}
-			if (c_bra$0 <= this.ket) {
-				this.ket = (this.ket + adjustment$0) | 0;
-			}
-			this.cursor = c;
-			break;
-		case 2:
-			this.ket = cursor$1 = this.cursor;
-			if (cursor$1 <= this.limit_backward) {
-				return false;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-			this.bra = this.cursor;
-			if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-				return false;
-			}
-			break;
-		case 3:
-			if (this.cursor !== this.I_p1) {
-				return false;
-			}
-			v_4 = ((this.limit - this.cursor) | 0);
-			if (! PorterStemmer$r_shortv$LPorterStemmer$(this)) {
-				return false;
-			}
-			cursor$2 = this.cursor = ((this.limit - v_4) | 0);
-			c = cursor$2;
-			c_bra$1 = cursor$2;
-			adjustment$1 = BaseStemmer$replace_s$LBaseStemmer$IIS(this, cursor$2, cursor$2, "e");
-			if (cursor$2 <= this.bra) {
-				this.bra = (this.bra + adjustment$1) | 0;
-			}
-			if (c_bra$1 <= this.ket) {
-				this.ket = (this.ket + adjustment$1) | 0;
-			}
-			this.cursor = c;
-			break;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.prototype.r_Step_1b = PorterStemmer.prototype.r_Step_1b$;
-
-function PorterStemmer$r_Step_1b$LPorterStemmer$($this) {
-	var among_var;
-	var v_1;
-	var v_3;
-	var v_4;
-	var lab1;
-	var c;
-	var c_bra$0;
-	var adjustment$0;
-	var c_bra$1;
-	var adjustment$1;
-	var cursor$0;
-	var cursor$1;
-	var cursor$2;
-	var $__jsx_postinc_t;
-	$this.ket = $this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_2, 3);
-	if (among_var === 0) {
-		return false;
-	}
-	$this.bra = $this.cursor;
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! (! ($this.I_p1 <= $this.cursor) ? false : true)) {
-			return false;
-		}
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ee")) {
-			return false;
-		}
-		break;
-	case 2:
-		v_1 = (($this.limit - $this.cursor) | 0);
-	golab0:
-		while (true) {
-			lab1 = true;
-		lab1:
-			while (lab1 === true) {
-				lab1 = false;
-				if (! BaseStemmer$in_grouping_b$LBaseStemmer$AIII($this, PorterStemmer.g_v, 97, 121)) {
-					break lab1;
-				}
-				break golab0;
-			}
-			if ($this.cursor <= $this.limit_backward) {
-				return false;
-			}
-			($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-		}
-		$this.cursor = (($this.limit - v_1) | 0);
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-			return false;
-		}
-		v_3 = (($this.limit - $this.cursor) | 0);
-		among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_1, 13);
-		if (among_var === 0) {
-			return false;
-		}
-		$this.cursor = (($this.limit - v_3) | 0);
-		switch (among_var) {
-		case 0:
-			return false;
-		case 1:
-			c = cursor$0 = $this.cursor;
-			c_bra$0 = cursor$0;
-			adjustment$0 = BaseStemmer$replace_s$LBaseStemmer$IIS($this, cursor$0, cursor$0, "e");
-			if (cursor$0 <= $this.bra) {
-				$this.bra = ($this.bra + adjustment$0) | 0;
-			}
-			if (c_bra$0 <= $this.ket) {
-				$this.ket = ($this.ket + adjustment$0) | 0;
-			}
-			$this.cursor = c;
-			break;
-		case 2:
-			$this.ket = cursor$1 = $this.cursor;
-			if (cursor$1 <= $this.limit_backward) {
-				return false;
-			}
-			($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-			$this.bra = $this.cursor;
-			if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-				return false;
-			}
-			break;
-		case 3:
-			if ($this.cursor !== $this.I_p1) {
-				return false;
-			}
-			v_4 = (($this.limit - $this.cursor) | 0);
-			if (! PorterStemmer$r_shortv$LPorterStemmer$($this)) {
-				return false;
-			}
-			cursor$2 = $this.cursor = (($this.limit - v_4) | 0);
-			c = cursor$2;
-			c_bra$1 = cursor$2;
-			adjustment$1 = BaseStemmer$replace_s$LBaseStemmer$IIS($this, cursor$2, cursor$2, "e");
-			if (cursor$2 <= $this.bra) {
-				$this.bra = ($this.bra + adjustment$1) | 0;
-			}
-			if (c_bra$1 <= $this.ket) {
-				$this.ket = ($this.ket + adjustment$1) | 0;
-			}
-			$this.cursor = c;
-			break;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.r_Step_1b$LPorterStemmer$ = PorterStemmer$r_Step_1b$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_1c$ = function () {
-	var v_1;
-	var lab0;
-	var lab1;
-	var lab3;
-	var $__jsx_postinc_t;
-	this.ket = this.cursor;
-	lab0 = true;
-lab0:
-	while (lab0 === true) {
-		lab0 = false;
-		v_1 = ((this.limit - this.cursor) | 0);
-		lab1 = true;
-	lab1:
-		while (lab1 === true) {
-			lab1 = false;
-			if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "y")) {
-				break lab1;
-			}
-			break lab0;
-		}
-		this.cursor = ((this.limit - v_1) | 0);
-		if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "Y")) {
-			return false;
-		}
-	}
-	this.bra = this.cursor;
-golab2:
-	while (true) {
-		lab3 = true;
-	lab3:
-		while (lab3 === true) {
-			lab3 = false;
-			if (! BaseStemmer$in_grouping_b$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-				break lab3;
-			}
-			break golab2;
-		}
-		if (this.cursor <= this.limit_backward) {
-			return false;
-		}
-		($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	}
-	return (! BaseStemmer$slice_from$LBaseStemmer$S(this, "i") ? false : true);
-};
-
-PorterStemmer.prototype.r_Step_1c = PorterStemmer.prototype.r_Step_1c$;
-
-function PorterStemmer$r_Step_1c$LPorterStemmer$($this) {
-	var v_1;
-	var lab0;
-	var lab1;
-	var lab3;
-	var $__jsx_postinc_t;
-	$this.ket = $this.cursor;
-	lab0 = true;
-lab0:
-	while (lab0 === true) {
-		lab0 = false;
-		v_1 = (($this.limit - $this.cursor) | 0);
-		lab1 = true;
-	lab1:
-		while (lab1 === true) {
-			lab1 = false;
-			if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "y")) {
-				break lab1;
-			}
-			break lab0;
-		}
-		$this.cursor = (($this.limit - v_1) | 0);
-		if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "Y")) {
-			return false;
-		}
-	}
-	$this.bra = $this.cursor;
-golab2:
-	while (true) {
-		lab3 = true;
-	lab3:
-		while (lab3 === true) {
-			lab3 = false;
-			if (! BaseStemmer$in_grouping_b$LBaseStemmer$AIII($this, PorterStemmer.g_v, 97, 121)) {
-				break lab3;
-			}
-			break golab2;
-		}
-		if ($this.cursor <= $this.limit_backward) {
-			return false;
-		}
-		($__jsx_postinc_t = $this.cursor, $this.cursor = ($__jsx_postinc_t - 1) | 0, $__jsx_postinc_t);
-	}
-	return (! BaseStemmer$slice_from$LBaseStemmer$S($this, "i") ? false : true);
-};
-
-PorterStemmer.r_Step_1c$LPorterStemmer$ = PorterStemmer$r_Step_1c$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_2$ = function () {
-	var among_var;
-	var cursor$0;
-	this.ket = this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_3, 20);
-	if (among_var === 0) {
-		return false;
-	}
-	this.bra = cursor$0 = this.cursor;
-	if (! (! (this.I_p1 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "tion")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ence")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ance")) {
-			return false;
-		}
-		break;
-	case 4:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "able")) {
-			return false;
-		}
-		break;
-	case 5:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ent")) {
-			return false;
-		}
-		break;
-	case 6:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "e")) {
-			return false;
-		}
-		break;
-	case 7:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ize")) {
-			return false;
-		}
-		break;
-	case 8:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ate")) {
-			return false;
-		}
-		break;
-	case 9:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "al")) {
-			return false;
-		}
-		break;
-	case 10:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "al")) {
-			return false;
-		}
-		break;
-	case 11:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ful")) {
-			return false;
-		}
-		break;
-	case 12:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ous")) {
-			return false;
-		}
-		break;
-	case 13:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ive")) {
-			return false;
-		}
-		break;
-	case 14:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ble")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.prototype.r_Step_2 = PorterStemmer.prototype.r_Step_2$;
-
-function PorterStemmer$r_Step_2$LPorterStemmer$($this) {
-	var among_var;
-	var cursor$0;
-	$this.ket = $this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_3, 20);
-	if (among_var === 0) {
-		return false;
-	}
-	$this.bra = cursor$0 = $this.cursor;
-	if (! (! ($this.I_p1 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "tion")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ence")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ance")) {
-			return false;
-		}
-		break;
-	case 4:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "able")) {
-			return false;
-		}
-		break;
-	case 5:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ent")) {
-			return false;
-		}
-		break;
-	case 6:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "e")) {
-			return false;
-		}
-		break;
-	case 7:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ize")) {
-			return false;
-		}
-		break;
-	case 8:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ate")) {
-			return false;
-		}
-		break;
-	case 9:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "al")) {
-			return false;
-		}
-		break;
-	case 10:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "al")) {
-			return false;
-		}
-		break;
-	case 11:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ful")) {
-			return false;
-		}
-		break;
-	case 12:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ous")) {
-			return false;
-		}
-		break;
-	case 13:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ive")) {
-			return false;
-		}
-		break;
-	case 14:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ble")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.r_Step_2$LPorterStemmer$ = PorterStemmer$r_Step_2$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_3$ = function () {
-	var among_var;
-	var cursor$0;
-	this.ket = this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_4, 7);
-	if (among_var === 0) {
-		return false;
-	}
-	this.bra = cursor$0 = this.cursor;
-	if (! (! (this.I_p1 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "al")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "ic")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.prototype.r_Step_3 = PorterStemmer.prototype.r_Step_3$;
-
-function PorterStemmer$r_Step_3$LPorterStemmer$($this) {
-	var among_var;
-	var cursor$0;
-	$this.ket = $this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_4, 7);
-	if (among_var === 0) {
-		return false;
-	}
-	$this.bra = cursor$0 = $this.cursor;
-	if (! (! ($this.I_p1 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "al")) {
-			return false;
-		}
-		break;
-	case 2:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "ic")) {
-			return false;
-		}
-		break;
-	case 3:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.r_Step_3$LPorterStemmer$ = PorterStemmer$r_Step_3$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_4$ = function () {
-	var among_var;
-	var v_1;
-	var lab0;
-	var lab1;
-	var cursor$0;
-	this.ket = this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I(this, PorterStemmer.a_5, 19);
-	if (among_var === 0) {
-		return false;
-	}
-	this.bra = cursor$0 = this.cursor;
-	if (! (! (this.I_p2 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-			return false;
-		}
-		break;
-	case 2:
-		lab0 = true;
-	lab0:
-		while (lab0 === true) {
-			lab0 = false;
-			v_1 = ((this.limit - this.cursor) | 0);
-			lab1 = true;
-		lab1:
-			while (lab1 === true) {
-				lab1 = false;
-				if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "s")) {
-					break lab1;
-				}
-				break lab0;
-			}
-			this.cursor = ((this.limit - v_1) | 0);
-			if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "t")) {
-				return false;
-			}
-		}
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.prototype.r_Step_4 = PorterStemmer.prototype.r_Step_4$;
-
-function PorterStemmer$r_Step_4$LPorterStemmer$($this) {
-	var among_var;
-	var v_1;
-	var lab0;
-	var lab1;
-	var cursor$0;
-	$this.ket = $this.cursor;
-	among_var = BaseStemmer$find_among_b$LBaseStemmer$ALAmong$I($this, PorterStemmer.a_5, 19);
-	if (among_var === 0) {
-		return false;
-	}
-	$this.bra = cursor$0 = $this.cursor;
-	if (! (! ($this.I_p2 <= cursor$0) ? false : true)) {
-		return false;
-	}
-	switch (among_var) {
-	case 0:
-		return false;
-	case 1:
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-			return false;
-		}
-		break;
-	case 2:
-		lab0 = true;
-	lab0:
-		while (lab0 === true) {
-			lab0 = false;
-			v_1 = (($this.limit - $this.cursor) | 0);
-			lab1 = true;
-		lab1:
-			while (lab1 === true) {
-				lab1 = false;
-				if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "s")) {
-					break lab1;
-				}
-				break lab0;
-			}
-			$this.cursor = (($this.limit - v_1) | 0);
-			if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "t")) {
-				return false;
-			}
-		}
-		if (! BaseStemmer$slice_from$LBaseStemmer$S($this, "")) {
-			return false;
-		}
-		break;
-	}
-	return true;
-};
-
-PorterStemmer.r_Step_4$LPorterStemmer$ = PorterStemmer$r_Step_4$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_5a$ = function () {
-	var v_1;
-	var v_2;
-	var lab0;
-	var lab1;
-	var lab2;
-	var cursor$0;
-	this.ket = this.cursor;
-	if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "e")) {
-		return false;
-	}
-	this.bra = this.cursor;
-	lab0 = true;
-lab0:
-	while (lab0 === true) {
-		lab0 = false;
-		v_1 = ((this.limit - this.cursor) | 0);
-		lab1 = true;
-	lab1:
-		while (lab1 === true) {
-			lab1 = false;
-			if (! (! (this.I_p2 <= this.cursor) ? false : true)) {
-				break lab1;
-			}
-			break lab0;
-		}
-		cursor$0 = this.cursor = ((this.limit - v_1) | 0);
-		if (! (! (this.I_p1 <= cursor$0) ? false : true)) {
-			return false;
-		}
-		v_2 = ((this.limit - this.cursor) | 0);
-		lab2 = true;
-	lab2:
-		while (lab2 === true) {
-			lab2 = false;
-			if (! PorterStemmer$r_shortv$LPorterStemmer$(this)) {
-				break lab2;
-			}
-			return false;
-		}
-		this.cursor = ((this.limit - v_2) | 0);
-	}
-	return (! BaseStemmer$slice_from$LBaseStemmer$S(this, "") ? false : true);
-};
-
-PorterStemmer.prototype.r_Step_5a = PorterStemmer.prototype.r_Step_5a$;
-
-function PorterStemmer$r_Step_5a$LPorterStemmer$($this) {
-	var v_1;
-	var v_2;
-	var lab0;
-	var lab1;
-	var lab2;
-	var cursor$0;
-	$this.ket = $this.cursor;
-	if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "e")) {
-		return false;
-	}
-	$this.bra = $this.cursor;
-	lab0 = true;
-lab0:
-	while (lab0 === true) {
-		lab0 = false;
-		v_1 = (($this.limit - $this.cursor) | 0);
-		lab1 = true;
-	lab1:
-		while (lab1 === true) {
-			lab1 = false;
-			if (! (! ($this.I_p2 <= $this.cursor) ? false : true)) {
-				break lab1;
-			}
-			break lab0;
-		}
-		cursor$0 = $this.cursor = (($this.limit - v_1) | 0);
-		if (! (! ($this.I_p1 <= cursor$0) ? false : true)) {
-			return false;
-		}
-		v_2 = (($this.limit - $this.cursor) | 0);
-		lab2 = true;
-	lab2:
-		while (lab2 === true) {
-			lab2 = false;
-			if (! PorterStemmer$r_shortv$LPorterStemmer$($this)) {
-				break lab2;
-			}
-			return false;
-		}
-		$this.cursor = (($this.limit - v_2) | 0);
-	}
-	return (! BaseStemmer$slice_from$LBaseStemmer$S($this, "") ? false : true);
-};
-
-PorterStemmer.r_Step_5a$LPorterStemmer$ = PorterStemmer$r_Step_5a$LPorterStemmer$;
-
-PorterStemmer.prototype.r_Step_5b$ = function () {
-	var cursor$0;
-	this.ket = this.cursor;
-	if (! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "l")) {
-		return false;
-	}
-	this.bra = cursor$0 = this.cursor;
-	return (! (! (this.I_p2 <= cursor$0) ? false : true) ? false : ! BaseStemmer$eq_s_b$LBaseStemmer$IS(this, 1, "l") ? false : ! BaseStemmer$slice_from$LBaseStemmer$S(this, "") ? false : true);
-};
-
-PorterStemmer.prototype.r_Step_5b = PorterStemmer.prototype.r_Step_5b$;
-
-function PorterStemmer$r_Step_5b$LPorterStemmer$($this) {
-	var cursor$0;
-	$this.ket = $this.cursor;
-	if (! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "l")) {
-		return false;
-	}
-	$this.bra = cursor$0 = $this.cursor;
-	return (! (! ($this.I_p2 <= cursor$0) ? false : true) ? false : ! BaseStemmer$eq_s_b$LBaseStemmer$IS($this, 1, "l") ? false : ! BaseStemmer$slice_from$LBaseStemmer$S($this, "") ? false : true);
-};
-
-PorterStemmer.r_Step_5b$LPorterStemmer$ = PorterStemmer$r_Step_5b$LPorterStemmer$;
-
-PorterStemmer.prototype.stem$ = function () {
-	var v_1;
-	var v_2;
-	var v_3;
-	var v_4;
-	var v_5;
-	var v_10;
-	var v_11;
-	var v_12;
-	var v_13;
-	var v_14;
-	var v_15;
-	var v_16;
-	var v_18;
-	var v_19;
-	var v_20;
-	var lab0;
-	var lab1;
-	var lab3;
-	var lab5;
-	var lab6;
-	var lab8;
-	var lab10;
-	var lab12;
-	var lab14;
-	var lab15;
-	var lab16;
-	var lab17;
-	var lab18;
-	var lab19;
-	var lab20;
-	var lab21;
-	var lab22;
-	var lab23;
-	var lab25;
-	var lab27;
-	var cursor$0;
-	var cursor$1;
-	var limit$0;
-	var cursor$2;
-	var cursor$3;
-	var limit$1;
-	var cursor$4;
-	var limit$2;
-	var cursor$5;
-	var limit$3;
-	var cursor$6;
-	var limit$4;
-	var cursor$7;
-	var limit$5;
-	var cursor$8;
-	var limit$6;
-	var cursor$9;
-	var limit$7;
-	var cursor$10;
-	var cursor$11;
-	var cursor$12;
-	var $__jsx_postinc_t;
-	this.B_Y_found = false;
-	v_1 = this.cursor;
-	lab0 = true;
-lab0:
-	while (lab0 === true) {
-		lab0 = false;
-		this.bra = this.cursor;
-		if (! BaseStemmer$eq_s$LBaseStemmer$IS(this, 1, "y")) {
-			break lab0;
-		}
-		this.ket = this.cursor;
-		if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "Y")) {
-			return false;
-		}
-		this.B_Y_found = true;
-	}
-	cursor$1 = this.cursor = v_1;
-	v_2 = cursor$1;
-	lab1 = true;
-lab1:
-	while (lab1 === true) {
-		lab1 = false;
-	replab2:
-		while (true) {
-			v_3 = this.cursor;
-			lab3 = true;
-		lab3:
-			while (lab3 === true) {
-				lab3 = false;
-			golab4:
-				while (true) {
-					v_4 = this.cursor;
-					lab5 = true;
-				lab5:
-					while (lab5 === true) {
-						lab5 = false;
-						if (! BaseStemmer$in_grouping$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-							break lab5;
-						}
-						this.bra = this.cursor;
-						if (! BaseStemmer$eq_s$LBaseStemmer$IS(this, 1, "y")) {
-							break lab5;
-						}
-						this.ket = this.cursor;
-						this.cursor = v_4;
-						break golab4;
-					}
-					cursor$0 = this.cursor = v_4;
-					if (cursor$0 >= this.limit) {
-						break lab3;
-					}
-					($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-				}
-				if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "Y")) {
-					return false;
-				}
-				this.B_Y_found = true;
-				continue replab2;
-			}
-			this.cursor = v_3;
-			break replab2;
-		}
-	}
-	cursor$2 = this.cursor = v_2;
-	this.I_p1 = limit$0 = this.limit;
-	this.I_p2 = limit$0;
-	v_5 = cursor$2;
-	lab6 = true;
-lab6:
-	while (lab6 === true) {
-		lab6 = false;
-	golab7:
-		while (true) {
-			lab8 = true;
-		lab8:
-			while (lab8 === true) {
-				lab8 = false;
-				if (! BaseStemmer$in_grouping$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-					break lab8;
-				}
-				break golab7;
-			}
-			if (this.cursor >= this.limit) {
-				break lab6;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		}
-	golab9:
-		while (true) {
-			lab10 = true;
-		lab10:
-			while (lab10 === true) {
-				lab10 = false;
-				if (! BaseStemmer$out_grouping$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-					break lab10;
-				}
-				break golab9;
-			}
-			if (this.cursor >= this.limit) {
-				break lab6;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		}
-		this.I_p1 = this.cursor;
-	golab11:
-		while (true) {
-			lab12 = true;
-		lab12:
-			while (lab12 === true) {
-				lab12 = false;
-				if (! BaseStemmer$in_grouping$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-					break lab12;
-				}
-				break golab11;
-			}
-			if (this.cursor >= this.limit) {
-				break lab6;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		}
-	golab13:
-		while (true) {
-			lab14 = true;
-		lab14:
-			while (lab14 === true) {
-				lab14 = false;
-				if (! BaseStemmer$out_grouping$LBaseStemmer$AIII(this, PorterStemmer.g_v, 97, 121)) {
-					break lab14;
-				}
-				break golab13;
-			}
-			if (this.cursor >= this.limit) {
-				break lab6;
-			}
-			($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-		}
-		this.I_p2 = this.cursor;
-	}
-	cursor$3 = this.cursor = v_5;
-	this.limit_backward = cursor$3;
-	cursor$4 = this.cursor = limit$1 = this.limit;
-	v_10 = ((limit$1 - cursor$4) | 0);
-	lab15 = true;
-lab15:
-	while (lab15 === true) {
-		lab15 = false;
-		if (! PorterStemmer$r_Step_1a$LPorterStemmer$(this)) {
-			break lab15;
-		}
-	}
-	cursor$5 = this.cursor = (((limit$2 = this.limit) - v_10) | 0);
-	v_11 = ((limit$2 - cursor$5) | 0);
-	lab16 = true;
-lab16:
-	while (lab16 === true) {
-		lab16 = false;
-		if (! PorterStemmer$r_Step_1b$LPorterStemmer$(this)) {
-			break lab16;
-		}
-	}
-	cursor$6 = this.cursor = (((limit$3 = this.limit) - v_11) | 0);
-	v_12 = ((limit$3 - cursor$6) | 0);
-	lab17 = true;
-lab17:
-	while (lab17 === true) {
-		lab17 = false;
-		if (! PorterStemmer$r_Step_1c$LPorterStemmer$(this)) {
-			break lab17;
-		}
-	}
-	cursor$7 = this.cursor = (((limit$4 = this.limit) - v_12) | 0);
-	v_13 = ((limit$4 - cursor$7) | 0);
-	lab18 = true;
-lab18:
-	while (lab18 === true) {
-		lab18 = false;
-		if (! PorterStemmer$r_Step_2$LPorterStemmer$(this)) {
-			break lab18;
-		}
-	}
-	cursor$8 = this.cursor = (((limit$5 = this.limit) - v_13) | 0);
-	v_14 = ((limit$5 - cursor$8) | 0);
-	lab19 = true;
-lab19:
-	while (lab19 === true) {
-		lab19 = false;
-		if (! PorterStemmer$r_Step_3$LPorterStemmer$(this)) {
-			break lab19;
-		}
-	}
-	cursor$9 = this.cursor = (((limit$6 = this.limit) - v_14) | 0);
-	v_15 = ((limit$6 - cursor$9) | 0);
-	lab20 = true;
-lab20:
-	while (lab20 === true) {
-		lab20 = false;
-		if (! PorterStemmer$r_Step_4$LPorterStemmer$(this)) {
-			break lab20;
-		}
-	}
-	cursor$10 = this.cursor = (((limit$7 = this.limit) - v_15) | 0);
-	v_16 = ((limit$7 - cursor$10) | 0);
-	lab21 = true;
-lab21:
-	while (lab21 === true) {
-		lab21 = false;
-		if (! PorterStemmer$r_Step_5a$LPorterStemmer$(this)) {
-			break lab21;
-		}
-	}
-	this.cursor = ((this.limit - v_16) | 0);
-	lab22 = true;
-lab22:
-	while (lab22 === true) {
-		lab22 = false;
-		if (! PorterStemmer$r_Step_5b$LPorterStemmer$(this)) {
-			break lab22;
-		}
-	}
-	cursor$12 = this.cursor = this.limit_backward;
-	v_18 = cursor$12;
-	lab23 = true;
-lab23:
-	while (lab23 === true) {
-		lab23 = false;
-		if (! this.B_Y_found) {
-			break lab23;
-		}
-	replab24:
-		while (true) {
-			v_19 = this.cursor;
-			lab25 = true;
-		lab25:
-			while (lab25 === true) {
-				lab25 = false;
-			golab26:
-				while (true) {
-					v_20 = this.cursor;
-					lab27 = true;
-				lab27:
-					while (lab27 === true) {
-						lab27 = false;
-						this.bra = this.cursor;
-						if (! BaseStemmer$eq_s$LBaseStemmer$IS(this, 1, "Y")) {
-							break lab27;
-						}
-						this.ket = this.cursor;
-						this.cursor = v_20;
-						break golab26;
-					}
-					cursor$11 = this.cursor = v_20;
-					if (cursor$11 >= this.limit) {
-						break lab25;
-					}
-					($__jsx_postinc_t = this.cursor, this.cursor = ($__jsx_postinc_t + 1) | 0, $__jsx_postinc_t);
-				}
-				if (! BaseStemmer$slice_from$LBaseStemmer$S(this, "y")) {
-					return false;
-				}
-				continue replab24;
-			}
-			this.cursor = v_19;
-			break replab24;
-		}
-	}
-	this.cursor = v_18;
-	return true;
-};
-
-PorterStemmer.prototype.stem = PorterStemmer.prototype.stem$;
-
-PorterStemmer.prototype.equals$X = function (o) {
-	return o instanceof PorterStemmer;
-};
-
-PorterStemmer.prototype.equals = PorterStemmer.prototype.equals$X;
-
-function PorterStemmer$equals$LPorterStemmer$X($this, o) {
-	return o instanceof PorterStemmer;
-};
-
-PorterStemmer.equals$LPorterStemmer$X = PorterStemmer$equals$LPorterStemmer$X;
-
-PorterStemmer.prototype.hashCode$ = function () {
-	var classname;
-	var hash;
-	var i;
-	var char;
-	classname = "PorterStemmer";
-	hash = 0;
-	for (i = 0; i < classname.length; i++) {
-		char = classname.charCodeAt(i);
-		hash = (hash << 5) - hash + char;
-		hash = hash & hash;
-	}
-	return (hash | 0);
-};
-
-PorterStemmer.prototype.hashCode = PorterStemmer.prototype.hashCode$;
-
-function PorterStemmer$hashCode$LPorterStemmer$($this) {
-	var classname;
-	var hash;
-	var i;
-	var char;
-	classname = "PorterStemmer";
-	hash = 0;
-	for (i = 0; i < classname.length; i++) {
-		char = classname.charCodeAt(i);
-		hash = (hash << 5) - hash + char;
-		hash = hash & hash;
-	}
-	return (hash | 0);
-};
-
-PorterStemmer.hashCode$LPorterStemmer$ = PorterStemmer$hashCode$LPorterStemmer$;
-
-PorterStemmer.serialVersionUID = 1;
-$__jsx_lazy_init(PorterStemmer, "methodObject", function () {
-	return new PorterStemmer();
-});
-$__jsx_lazy_init(PorterStemmer, "a_0", function () {
-	return [ new Among("s", -1, 3), new Among("ies", 0, 2), new Among("sses", 0, 1), new Among("ss", 0, -1) ];
-});
-$__jsx_lazy_init(PorterStemmer, "a_1", function () {
-	return [ new Among("", -1, 3), new Among("bb", 0, 2), new Among("dd", 0, 2), new Among("ff", 0, 2), new Among("gg", 0, 2), new Among("bl", 0, 1), new Among("mm", 0, 2), new Among("nn", 0, 2), new Among("pp", 0, 2), new Among("rr", 0, 2), new Among("at", 0, 1), new Among("tt", 0, 2), new Among("iz", 0, 1) ];
-});
-$__jsx_lazy_init(PorterStemmer, "a_2", function () {
-	return [ new Among("ed", -1, 2), new Among("eed", 0, 1), new Among("ing", -1, 2) ];
-});
-$__jsx_lazy_init(PorterStemmer, "a_3", function () {
-	return [ new Among("anci", -1, 3), new Among("enci", -1, 2), new Among("abli", -1, 4), new Among("eli", -1, 6), new Among("alli", -1, 9), new Among("ousli", -1, 12), new Among("entli", -1, 5), new Among("aliti", -1, 10), new Among("biliti", -1, 14), new Among("iviti", -1, 13), new Among("tional", -1, 1), new Among("ational", 10, 8), new Among("alism", -1, 10), new Among("ation", -1, 8), new Among("ization", 13, 7), new Among("izer", -1, 7), new Among("ator", -1, 8), new Among("iveness", -1, 13), new Among("fulness", -1, 11), new Among("ousness", -1, 12) ];
-});
-$__jsx_lazy_init(PorterStemmer, "a_4", function () {
-	return [ new Among("icate", -1, 2), new Among("ative", -1, 3), new Among("alize", -1, 1), new Among("iciti", -1, 2), new Among("ical", -1, 2), new Among("ful", -1, 3), new Among("ness", -1, 3) ];
-});
-$__jsx_lazy_init(PorterStemmer, "a_5", function () {
-	return [ new Among("ic", -1, 1), new Among("ance", -1, 1), new Among("ence", -1, 1), new Among("able", -1, 1), new Among("ible", -1, 1), new Among("ate", -1, 1), new Among("ive", -1, 1), new Among("ize", -1, 1), new Among("iti", -1, 1), new Among("al", -1, 1), new Among("ism", -1, 1), new Among("ion", -1, 2), new Among("er", -1, 1), new Among("ous", -1, 1), new Among("ant", -1, 1), new Among("ent", -1, 1), new Among("ment", 15, 1), new Among("ement", 16, 1), new Among("ou", -1, 1) ];
-});
-PorterStemmer.g_v = [ 17, 65, 16, 1 ];
-PorterStemmer.g_v_WXY = [ 1, 17, 65, 208, 1 ];
-
-var $__jsx_classMap = {
-	"src/among.jsx": {
-		Among: Among,
-		Among$SII: Among,
-		Among$SIIF$LBaseStemmer$B$LBaseStemmer$: Among$0
-	},
-	"src/stemmer.jsx": {
-		Stemmer: Stemmer,
-		Stemmer$: Stemmer
-	},
-	"src/base-stemmer.jsx": {
-		BaseStemmer: BaseStemmer,
-		BaseStemmer$: BaseStemmer
-	},
-	"src/porter-stemmer.jsx": {
-		PorterStemmer: PorterStemmer,
-		PorterStemmer$: PorterStemmer
-	}
-};
-
-
-})(JSX);
-
-var Among = JSX.require("src/among.jsx").Among;
-var Among$SII = JSX.require("src/among.jsx").Among$SII;
-var Stemmer = JSX.require("src/stemmer.jsx").Stemmer;
-var BaseStemmer = JSX.require("src/base-stemmer.jsx").BaseStemmer;
-var PorterStemmer = JSX.require("src/porter-stemmer.jsx").PorterStemmer;
